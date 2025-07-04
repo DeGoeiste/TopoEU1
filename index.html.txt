@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Europa land-hoofdstad quiz</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; background-color: #f0f8ff; margin: 0; padding: 0; }
+    h1 { margin-top: 20px; }
+    .container {
+      position: relative;
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    img {
+      width: 100%;
+      max-width: 1000px;
+      height: auto;
+      margin: 0 auto;
+      display: block;
+    }
+    #quiz-box {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      width: 300px;
+      padding: 15px;
+      z-index: 10;
+    }
+    input[type="text"] {
+      width: 90%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px auto;
+      border: none;
+      border-radius: 5px;
+      background-color: #007acc;
+      color: white;
+      cursor: pointer;
+    }
+    #feedback {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    #score {
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Europa land-hoofdstad quiz</h1>
+  <div class="container">
+    <div id="quiz-box">
+      <h2>Welk land en hoofdstad hoort bij nummer <span id="vraag-nummer"></span>?</h2>
+      <input type="text" id="land" placeholder="Land"><br>
+      <input type="text" id="hoofdstad" placeholder="Hoofdstad"><br>
+      <button onclick="controleerAntwoord()">Controleer</button>
+      <div id="feedback"></div>
+    </div>
+    <img src="europa-kaart.jpg" alt="Kaart van Europa">
+  </div>
+  <div id="score"></div>
+
+  <script>
+    const antwoorden = {
+      1: ["IJsland", ["Reykjavik", "Reykjavík"]],
+      2: ["Ierland", ["Dublin"]],
+      3: ["Verenigd Koninkrijk", ["Londen"]],
+      4: ["Noorwegen", ["Oslo"]],
+      5: ["Zweden", ["Stockholm"]],
+      6: ["Finland", ["Helsinki"]],
+      7: ["Denemarken", ["Kopenhagen"]],
+      8: ["Duitsland", ["Berlijn"]],
+      9: ["België", ["Brussel"]],
+      10: ["Luxemburg", ["Luxemburg"]],
+      11: ["Frankrijk", ["Parijs"]],
+      12: ["Spanje", ["Madrid"]],
+      13: ["Portugal", ["Lissabon"]],
+      14: ["Italië", ["Rome"]],
+      15: ["Zwitserland", ["Bern"]],
+      16: ["Oostenrijk", ["Wenen"]],
+      17: ["Polen", ["Warschau"]],
+      18: ["Tsjechië", ["Praag"]],
+      19: ["Slowakije", ["Bratislava"]],
+      20: ["Hongarije", ["Boedapest", "Budapest"]],
+      21: ["Slovenië", ["Ljubljana"]],
+      22: ["Kroatië", ["Zagreb"]],
+      23: ["Bosnië en Herzegovina", ["Sarajevo"]],
+      24: ["Servië", ["Belgrado"]],
+      25: ["Montenegro", ["Podgorica"]],
+      26: ["Kosovo", ["Prishtine", "Prishtinë"]],
+      27: ["Albanië", ["Tirana"]],
+      28: ["Noord-Macedonië", ["Skopje"]],
+      29: ["Griekenland", ["Athene"]],
+      30: ["Estland", ["Tallinn"]],
+      31: ["Letland", ["Riga"]],
+      32: ["Litouwen", ["Vilnius"]],
+      33: ["Wit-Rusland", ["Minsk"]],
+      34: ["Oekraïne", ["Kiev", "Kyiv"]],
+      35: ["Moldavië", ["Chisinau", "Chișinău"]],
+      36: ["Roemenië", ["Boekarest"]],
+      37: ["Bulgarije", ["Sofia"]],
+      38: ["Rusland", ["Moskou"]]
+    };
+
+    let scoreGoed = 0;
+    let scoreFout = 0;
+    let huidigeNummer = 0;
+    let nummersOver = [...Array(38).keys()].map(i => i + 1);
+    let tweedeKans = false;
+
+    function normalize(text) {
+      return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function volgendeVraag() {
+      if (nummersOver.length === 0) {
+        document.getElementById("quiz-box").innerHTML = "<h2>Quiz voltooid!</h2><p>Score: " + scoreGoed + " goed, " + scoreFout + " fout.</p>";
+        return;
+      }
+      const index = Math.floor(Math.random() * nummersOver.length);
+      huidigeNummer = nummersOver.splice(index, 1)[0];
+      document.getElementById("vraag-nummer").textContent = huidigeNummer;
+      document.getElementById("land").value = "";
+      document.getElementById("hoofdstad").value = "";
+      document.getElementById("quiz-box").style.display = "block";
+      document.getElementById("feedback").textContent = "";
+      tweedeKans = false;
+
+      if ([1, 2, 3].includes(huidigeNummer)) {
+        document.getElementById("quiz-box").style.left = "auto";
+        document.getElementById("quiz-box").style.right = "10px";
+      } else {
+        document.getElementById("quiz-box").style.right = "auto";
+        document.getElementById("quiz-box").style.left = "10px";
+      }
+    }
+
+    function controleerAntwoord() {
+      const land = normalize(document.getElementById("land").value.trim());
+      const hoofdstad = normalize(document.getElementById("hoofdstad").value.trim());
+      const correctLand = normalize(antwoorden[huidigeNummer][0]);
+      const correcteHoofdsteden = antwoorden[huidigeNummer][1].map(normalize);
+
+      if (land === correctLand && correcteHoofdsteden.includes(hoofdstad)) {
+        scoreGoed++;
+        document.getElementById("feedback").textContent = "✅ Alles correct!";
+        document.getElementById("score").innerHTML = `Score: ${scoreGoed} goed, ${scoreFout} fout.`;
+        setTimeout(volgendeVraag, 1000);
+      } else if (!tweedeKans) {
+        tweedeKans = true;
+        document.getElementById("land").value = "";
+        document.getElementById("hoofdstad").value = "";
+        document.getElementById("feedback").textContent = "❌ Niet correct, probeer het nog eens.";
+      } else {
+        scoreFout++;
+        const juisteAntwoorden = antwoorden[huidigeNummer];
+        document.getElementById("feedback").textContent = `❌ Fout. Juist antwoord: ${juisteAntwoorden[0]} - ${juisteAntwoorden[1][0]}`;
+        document.getElementById("score").innerHTML = `Score: ${scoreGoed} goed, ${scoreFout} fout.`;
+        setTimeout(volgendeVraag, 2000);
+      }
+    }
+
+    window.onload = volgendeVraag;
+  </script>
+</body>
+</html>
