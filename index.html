@@ -17,7 +17,7 @@
     .container {
       position: relative;
       width: 100%;
-      max-width: 1000px;
+      max-width: 1200px;
       margin: 0 auto;
     }
     img {
@@ -26,12 +26,12 @@
       max-height: 600px;
       height: auto;
       display: block;
-      margin-left: 160px; /* afbeelding iets naar rechts */
+      margin-left: 220px; /* kaart verder naar rechts */
     }
     #quiz-box {
       position: absolute;
       top: 50%;
-      left: 1px;
+      left: -20px; /* box meer naar links */
       transform: translateY(-50%);
       background: #fff;
       border: 1px solid #ccc;
@@ -39,6 +39,7 @@
       width: 300px;
       padding: 15px;
       z-index: 10;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     input[type="text"] {
       width: 90%;
