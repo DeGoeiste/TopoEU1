@@ -26,20 +26,20 @@
       max-height: 600px;
       height: auto;
       display: block;
-      margin-left: 80px; /* afbeelding naar rechts */
+      margin-left: 80px; /* afbeelding iets naar rechts */
     }
     #quiz-box {
-  position: absolute;
-  top: 50%;
-  left: 5px;
-  transform: translateY(-50%);
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  width: 300px;
-  padding: 15px;
-  z-index: 10;
-}
+      position: absolute;
+      top: 50%;
+      left: 5px;
+      transform: translateY(-50%);
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      width: 300px;
+      padding: 15px;
+      z-index: 10;
+    }
     input[type="text"] {
       width: 90%;
       padding: 8px;
@@ -145,14 +145,6 @@
       document.getElementById("quiz-box").style.display = "block";
       document.getElementById("feedback").textContent = "";
       tweedeKans = false;
-
-      if ([1, 2, 3].includes(huidigeNummer)) {
-        document.getElementById("quiz-box").style.left = "auto";
-        document.getElementById("quiz-box").style.right = "10px";
-      } else {
-        document.getElementById("quiz-box").style.right = "auto";
-        document.getElementById("quiz-box").style.left = "5px";
-      }
     }
 
     function controleerAntwoord() {
